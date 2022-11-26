@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styele.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+        <a class="navbar-brand" href="/forma"><b>&nbsp;&nbsp;&nbsp;Regresar a Login </b></a>
+    </nav>
+    <div class="container col-8 my-5 br-2 rounded">
+        <div class="row g-3">
+            <div class="col-4 order-md-last">
+                <div class="card text-center ">
+                  
+                </div>
+                
+            </div>
+            <div class="col-15">
+                <div class="card bg-danger text-center">
+                    <h3>Registro faltas</h3>
+                </div>
+                <form class="row g-3 needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-12 mt-3">
+                            <label class="form-label" for="firstname">Nombre</label>
+                            <input type="text" id="nombre" class="form-control" required>
+                            <div class="invalid-feedback">
+                                Ingrese nombre 
+                            </div>
+                        </div>
+                        
+                        <div class="col-4 mt-3">
+                            <label class="form-label" for="zip">Faltas Materia 1 </label>
+                            <input type="number" id="faltas1" class="form-control" required>
+                            <div class="invalid-feedback">
+                                Ingrese la falta 
+                             </div>
+                        </div>
+                        <div class="col-4 mt-3">
+                            <label class="form-label" for="zip">Faltas Materia 2 </label>
+                            <input type="number" id="faltas2" class="form-control" required>
+                            <div class="invalid-feedback">
+                                Ingrese la falta 
+                             </div>
+                        </div>
+                        <div class="col-4 mt-3">
+                            <label class="form-label" for="zip">Faltas Materia 3 </label>
+                            <input type="number" id="faltas3" class="form-control" required>
+                            <div class="invalid-feedback">
+                                Ingrese la falta 
+                             </div>
+                        </div>                     
+                     
+                       
+                    </div>
+                   
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <button  class="btn btn-danger btn-block mb-4" onclick="agregarCal();">Promediar faltas</button>
+                    </div>
+                    
+                </form>
+            </div>
+            
+        </div>
+   
+        <div class="card bg-danger text-center">
+            <h4>Resultados</h4>
+        </div>
+        <div class="car-footer p-2">
+        
+            <table class="table table-striped table-bordered mt-3 " >
+                <thead class="text-center font-weight-bold">
+                    <tr class="bg-secondary text-white">
+                        <td>Nombre</td>
+                        <td>Materia 1</td>
+                        <td>Materia 2</td>
+                        <td>Materia 3</td>
+                        <td>Promedio faltas</td>
+                        <td>Veredicto</td>
+                    </tr>
+                </thead>
+                <tbody id="addtabla">
+                    
+                </tbody>                  
+            </table>
+       </div>
+    </div>  
+    
+    <script>
+       
+(function () {
+  'use strict'
+
+  
+  var forms = document.querySelectorAll('.needs-validation')
+
+ 
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+    </script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</body>
+</html>
+<script>
+    
+function agregarCal(){
+  
+  let nom=document.getElementById('nombre').value;
+  let cal1=document.getElementById('faltas1').value;
+  let cal2=document.getElementById('faltas2').value;
+  let cal3=document.getElementById('faltas3').value;
+  
+  
+  if(nom===""){
+      
+      swal("Ingrese los campos faltantes", "Los campos deben estar llenos para continuar", "warning");return false;
+  }
+  
+  if(cal1==="" || cal2==="" || cal3===""){
+      
+      swal("Ingrese las faltas", "Las faltas no pueden ser vacios", "warning");return false;
+      
+  }
+  
+  if(cal1 >= 16 || cal2 >= 16  || cal3 >= 16){
+      alert("Solo hay 16 clases al semestre")
+      return false;
+  }
+  
+
+  var prom = (parseFloat(cal1)+ parseFloat(cal2)+ parseFloat(cal3)) /3;  
+
+
+  var  obs =0;
+  
+  if(prom >=4){
+      obs =value="Exceso de faltas!!!&#x274c";
+      
+  }else{
+  obs =value="Normal de faltas!!!! &#x2714";
+  
+  }   
+    
+  const tabla=document.getElementById('addtabla');
+  
+  const fila=document.createElement('tr');            
+            
+  
+  fila.innerHTML=`<td> ${nom} </td><td> ${cal1} </td><td> ${cal2} </td><td> ${cal3} </td><td> ${prom.toFixed(1)} </td><td> ${obs} </td>`;
+  
+   
+
+
+  
+  tabla.appendChild(fila);
+
+  if(prom>12.5){
+      document.querySelector("#addtabla tr:last-child td:nth-child(5)").style.background = "#B3DEBA";
+  }else{
+      document.querySelector("#addtabla tr:last-child td:nth-child(5)").style.background = "#FFCABA";
+  }
+  if(cal1>12.5){
+      document.querySelector("#addtabla tr:last-child td:nth-child(2)").style.color = "blue";
+  }else{
+      document.querySelector("#addtabla tr:last-child td:nth-child(2)").style.color = "red";
+  }
+  if(cal2>12.5){
+      document.querySelector("#addtabla tr:last-child td:nth-child(3)").style.color = "blue";
+  }else{
+      document.querySelector("#addtabla tr:last-child td:nth-child(3)").style.color = "red";
+  }
+  if(cal3>12.5){
+      document.querySelector("#addtabla tr:last-child td:nth-child(4)").style.color = "blue";
+  }else{
+      document.querySelector("#addtabla tr:last-child td:nth-child(4)").style.color = "red";
+  }
+  
+  
+  
+  document.getElementById('nombre').value='';
+  document.getElementById('faltas1').value='';
+  document.getElementById('faltas2').value='';
+  document.getElementById('faltas3').value='';
+  
+
+}
+</script>

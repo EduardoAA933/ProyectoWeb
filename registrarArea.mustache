@@ -1,0 +1,193 @@
+<html>
+    <head>
+        <title>Sistema de Horarios</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div id="Panel" >
+                <form action="">
+                <label for="name">Alumno</label>
+                <input id="name" class="form-control activate" type="text" placeholder="Nombre del alumno" required><br>
+                <label for="Matricula">Matricula</label>
+                <input id="Matricula" class="form-control" type="number" placeholder="Matricula" required><br>
+                <label for="inicio"> Inicio Escolar</label>
+                <input id="inicio" class="form-control" type="date" placeholder="inicio Escolar" required><br>
+                <label for="fin">Fin Escolar</label>
+                <input id="fin" class="form-control" type="date" placeholder="fin Escolar" required><br>
+                <label for="Plan">Programa Académico</label>
+                <select id="Plan" class="form-control" required>
+                    <option>Ninguno</option>
+                    <option value="IIDC">INGENIERÍA EN INTELIGENCIA DE DATOS Y CYBERSEGURIDAD</option>
+                </select><br>
+                <input type="submit" id="btnEnviar" value="Generar Horario">
+                </form>
+                </div>
+                <div>
+                    <div class="jumbotron text-center bg-danger">
+                        <h5>HORARIO DE CLASES</h5>
+                        
+                    </div>
+                    <label><h4 id="alumno"></h4></label><br>
+                    <label id="matricula"></label><br>
+                    <label id="proaca"></label><br>
+                    <label id="plan"></label>
+                    <label id="sede"></label>
+                    <tabla id="tabla-datos">
+                        <table id="tabla-dinamica">
+                            <tbody id="tabla-dinamica-tbody"></tbody>
+                    </table>
+                    <label id="Credit"></label>
+                </div>
+    </div>
+    </body>
+    <script src="inputs.js"></script>
+</html>
+<script>
+
+
+
+class DatosAlumno{
+    constructor(Alumno, Matricula, mesinicio, mesfinal, Plan, year){
+        this.nameAlumno = Alumno;
+        this.matricula = Matricula;
+        this.mesinicio = mesinicio;
+        this.mesfinal = mesfinal;
+        this.Plan = Plan;
+        this.year = year;
+        
+    }
+    GetAlumno(){
+        return this.nameAlumno.value;
+    }
+    GetMatricula(){
+        return this.matricula.value;
+    }
+    Getmesinicio(){
+        return this.mesinicio.value;
+    }
+    GetmesFinal(){
+        return this.mesfinal.value;
+    }
+
+    GetProAca(){
+        return this.Plan.value +"-"+ this.year;
+    }
+}
+
+btnEnviar.addEventListener('click', btnEnviar_click);
+let inputs, i=0;
+function btnEnviar_click(e) {
+    const txtAlumno = document.getElementById('name');
+    const txtMatricula = document.getElementById('Matricula');
+    const txtinicio = new Date(document.getElementById('inicio').value);
+    const txtfin = new Date(document.getElementById('fin').value);
+    const txtYear = 2022;
+    const txtPlan = document.getElementById('Plan');
+       inputs = new DatosAlumno(txtAlumno, txtMatricula, txtinicio.getMonth(), txtfin.getMonth(),txtPlan,txtYear);
+        document.getElementById('Panel').innerHTML ="";
+        btnCrearTabla_click();
+   
+}
+
+const tablaDinamicaTbody = document.getElementById('tabla-dinamica-tbody');
+
+Materias = ["[Materia][Profesor]","Grupo",
+[
+    ["[DESARROLLO WEB]-[DAVID CRUZ]"],
+    ["[PROGRAMACIÓN Y ESTRUCTURA DE DATOS]-[GERARDO BARCENAS]"],
+    ["[CYBERSEGURIDAD]-[DIANA CAROLINA]"],
+    ["[TELEMATICA]-[DR LEDO]"],
+    ["[MATEMATICAS DE LA COMPUTACION]-[JORGE BARBARO]"],
+    ["[ANTROPOLOGIA TEOLOGIA II]-[PADRE CESAR]"],
+    ["[PROBABILIDAD Y ESTADISTICA]-[HUGO SERRATO]"],
+],
+["IIDC-0001","IIDC-0002","IIDC-0003","IIDC-0004","IIDC-0005","IIDC-0006","IIDC-0007"],
+[
+    ["Lunes      ","Martes     ","Miercoles  ","Jueves     ", "Viernes    ","Sabado"],
+    ["13:00-13:54","Libre      ","14:00-14:54","13:00-13:54", "Libre      ","       "],
+    ["           ","18:55-19:49","18:55-19:44","18:00-19:49", "Libre      ","       "],
+    ["           ","14:55-16:44","15:50-16:44","15:50-16:44", "15:50-16:44","       "],
+    ["15:50 16:44","Libre      ","14:55-15:49","14:55-15:49", "Libre      ","       "],
+    ["18:00 18:54","18:00-18:54","18:00-18:54","Libre      ", "Libre      ","       "],
+    ["14:00 15:49","Libre      ","Libre      ","14:00-14:54", "14:00 15:49","       "],
+    ["16:45 17:39","16:45-17:39","16:45-17:39","16:45-17:39", "16:45 17:39","       "]
+]
+];
+
+
+function btnCrearTabla_click(e) {
+    let r = 8;
+    let c = 9;
+    let temp=0,temp2=0,temp3=0,band=0;
+    if (r <= 0 || c <= 0) return;
+    let rowsFragment = document.createDocumentFragment();
+    document.getElementById("alumno").innerHTML = "Alumno: "+inputs.GetAlumno();
+    document.getElementById("matricula").innerHTML = "Matricula: "+inputs.GetMatricula();
+    document.getElementById("proaca").innerHTML = "Programa Academico: INGENIERÍA EN INTELIGENCIA DE DATOS Y CYBERSEGURIDAD";
+    document.getElementById("plan").innerHTML = "Plan de estudio: "+inputs.GetProAca();
+    document.getElementById("sede").innerHTML = "Sede: MIXCOAC";
+    for (let ir = 0; ir < r; ir++) {
+
+        let tr = document.createElement('tr');
+
+         for (let ic = 0; ic < c; ic++) {
+            let td = document.createElement('td');
+            td.id = 'td_' + ir + '_' + ic;
+            td.classList.add('td-m');
+            td.textContent = `[${ir}][${ic}]`; 
+            if(band==ir && ic != 0 && ic != 1 && ic < 8){
+                td.textContent = `${Materias[4][band][temp3]}`;
+                temp3++;
+            }
+            if(ic==8) td.textContent = `    6`;
+            
+            if(ir == 0 && ic == 0){
+                td.textContent = `[Materia] [Profesor]`;
+            }
+            if(ir == 0 && ic == 1){
+                td.textContent = `Grupo`;
+            }
+            if(ir == 0 && ic != 0 && ic != 1 && i < Materias[3][0].length){
+                if(temp2 < 8){
+                    td.textContent = `${Materias[4][0][temp2++]}`;
+                }
+            }
+            if(ir==0 && ic==8){
+                td.textContent = `Creditos`;
+            }
+            if(ic == 0 && ir != 0){
+                td.textContent = Materias[2][temp];
+
+            }
+            if(ic == 1 && ir != 0){
+                td.textContent = Materias[3][temp];
+                temp++;
+            }
+
+            
+            td.addEventListener('click', tablaDinamicaTd_click);  // click event
+            tr.appendChild(td);
+        }
+        temp3=0;
+        band++;
+        rowsFragment.appendChild(tr);
+
+    }
+
+    tablaDinamicaTbody.appendChild(rowsFragment);
+
+}
+
+function tablaDinamicaTd_click(e) {
+    const td = this;
+    td.style.backgroundColor = 'red';
+    alert('Hizo click en ' + td.id);
+}
+
+
+
+</script>
